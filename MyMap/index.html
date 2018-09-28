@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Gooogle Map</title>
+    <style>
+        #map{
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Gooogle Map</h1>
+    <div id="map"></div>
+    <script>
+        //Map options
+        function initMap(){
+            var options = {
+                zoom: 8,
+                center: {lat: -34.72418, lng: -58.25265}
+            };
+            //New Map
+            var map = new google.maps.Map(document.getElementById('map'), options);
+            
+            //Listen for click on map
+            google.maps.event.addListener(map, 'click', function(event){
+                addMarker({coords: event.latLng}); //The latitude and longitude of where you clicked.
+            })
+
+            /*
+            //Add markers
+            var marker = new google.maps.Marker({
+                position: {lat: -34.72418, lng: -58.25265},
+                map: map,
+                icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+            });
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: '<h1>Quilmes</h1>'
+            });
+
+            marker.addListener('click', function(){
+
+                infoWindow.open(map, marker);
+            });
+
+            */
+
+            var markers = [
+                {
+                    coords: {lat: -34.72418, lng: -58.25265},
+                    icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                    content: '<h1>Quilmes</h1>'
+                }
+            ];
+
+            for(var i = 0; i < markers.length; i++){
+                addMarker(markers[i]);   
+            }
+
+            //Add marker function
+            function addMarker(props){
+                var marker = new google.maps.Marker({
+                    position: props.coords,
+                    map: map
+                });
+                
+                //Check for custom icon 
+                if(props.icon){
+                    marker.setIcon(props.icon);
+                }
+
+                //Check content
+                if(props.content){
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: props.content
+                    });
+
+                    marker.addListener('click', function(){
+
+                        infoWindow.open(map, marker);
+                    });
+                }
+            }
+        }    
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC44DAsjt8XqJPtcZB3xLkqAakZTQIc2pc&callback=initMap"
+    async defer></script>
+</body>
+</html>
